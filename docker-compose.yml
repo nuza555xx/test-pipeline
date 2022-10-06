@@ -6,7 +6,7 @@ services:
     build:
       context: .
     image: my-project
-    env_file: docker-compose.env
+    env_file: .env
     environment:
       SERVICES: api
       PORT: 3000
@@ -23,7 +23,7 @@ services:
     build:
       context: .
     image: my-project
-    env_file: docker-compose.env
+    env_file: .env
     environment:
       SERVICES: greeter
     depends_on:
@@ -35,7 +35,7 @@ services:
     build:
       context: .
     image: my-project
-    env_file: docker-compose.env
+    env_file: .env
     environment:
       SERVICES: products
     depends_on:
@@ -73,6 +73,7 @@ services:
 
 networks:
   internal:
+
 
 volumes:
   data:
