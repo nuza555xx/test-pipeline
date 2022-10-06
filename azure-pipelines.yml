@@ -1,19 +1,32 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
+variables:
+  azureSubscription: YourSubscription
+  azureContainerRegistryEndPoint: Contoso.azurecr.io
+
+# Agent should be non micorosft
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: DockerCompose@0
+  displayName: 'Docker Compose command'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    azureContainerRegistry: '$(azureContainerRegistryEndPoint)'
+    dockerComposeFile: 'DemoDockerComposeOnAzure/docker-compose.yml'
+    dockerComposeCommand: '--no-ansi   build '
+    arguments: '--no-ansi   build '
+
+
+- task: DockerCompose@0
+  displayName: 'Push service images command'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    azureContainerRegistry: '$(azureContainerRegistryEndPoint)'
+    dockerComposeFile: 'DemoDockerComposeOnAzure/docker-compose.yml'
+    action: 'Push services'
+   
+    includeLatestTag: true
